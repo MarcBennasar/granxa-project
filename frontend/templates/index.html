@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <title>Sensor temperature</title>
+    <script>
+      function get_updated_doc(){
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", "/update_doc", true);
+        xhttp.send();
+        xhttp.onreadystatechange = function(){
+          if (this.readyState == 4 && this.status == 200) {
+            var value = JSON.parse(this.response);
+            document.getElementById('doc_ts').innerHTML = value.timestamp;
+            document.getElementById('doc_mean').innerHTML = value.meanValue;
+            document.getElementById('doc_min').innerHTML = value.minValue;
+            document.getElementById('doc_max').innerHTML = value.maxValue;
+            document.getElementById('doc_std').innerHTML = value.stdValue;
+
+          }
+        };
+      }
+      setInterval(get_updated_doc, 10000)
+    </script>
+  </head>
+  <body>
+    <h1> Temperature reading </h1>
+    <p>
+      <div>Timestamp: <span id="doc_ts"> {{ value.timestamp }}</span></div>
+      <div>Mean temperature: <span id="doc_mean"> {{ value.meanValue }}</span></div>
+      <div>Min temperature: <span id="doc_min"> {{ value.minValue }}</span></div>
+      <div>Max temperature: <span id="doc_max"> {{ value.maxValue }}</span></div>
+      <div>Std temperature: <span id="doc_std"> {{ value.stdValue }}</span></div>
+
+    </p>
+  </body>
+</html>
